@@ -36,6 +36,7 @@ android {
         applicationId "com.reboxlabs.toksmeals"
         minSdkVersion 16
         targetSdkVersion 28
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -52,3 +53,9 @@ android {
 flutter {
     source '../..'
 }
+
+dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
+}
+
+apply plugin: 'com.google.gms.google-services'

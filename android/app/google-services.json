@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "470537909242",
+    "firebase_url": "https://toksmeals.firebaseio.com",
+    "project_id": "toksmeals",
+    "storage_bucket": "toksmeals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470537909242:android:e6f323e3c8be2ab6806a43",
+        "android_client_info": {
+          "package_name": "com.reboxlabs.toksmeals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470537909242-m20ladetdu181sl8m27hm99r4p1bg3qa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reboxlabs.toksmeals",
+            "certificate_hash": "d042c97b3743406b384a8a0b460b7f5c1d818ea6"
+          }
+        },
+        {
+          "client_id": "470537909242-lgj51pqjlqs2dc1d6mjr3dvn753g1r7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGpLSdU503FOSV69HPk3r9wcfitK2NwQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470537909242-lgj51pqjlqs2dc1d6mjr3dvn753g1r7i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
