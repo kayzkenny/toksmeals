@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:toksmeals/models/menu_item.dart';
 import 'package:toksmeals/models/user.dart';
 
 class DatabaseService {
@@ -9,6 +10,9 @@ class DatabaseService {
   // collection reference
   final CollectionReference userCollection =
       Firestore.instance.collection('users');
+
+  final CollectionReference menuCollection =
+      Firestore.instance.collection('menu');
 
   // update user data
   Future updateUserData({
@@ -43,4 +47,34 @@ class DatabaseService {
   Stream<UserData> get userData {
     return userCollection.document(uid).snapshots().map(_userDataFromSnapshot);
   }
+
+  // menu item list from snapshot
+  List<MenuItem> _menuItemListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents
+        .map(
+          (doc) => MenuItem(
+            category: doc.data['category'] ?? '',
+            imageUrl: doc.data['imageUrl'] ?? '',
+            name: doc.data['name'] ?? '',
+            price: doc.data['price'] ?? '',
+          ),
+        )
+        .toList();
+  }
+
+  Stream<List<MenuItem>> get meals {
+    return menuCollection
+        .where("category", isEqualTo: "meal")
+        .snapshots()
+        .map(_menuItemListFromSnapshot);
+  }
+
+  // void getMeals() async {
+  //   var result = await menuCollection
+  //       .where("category", isEqualTo: "meal")
+  //       .getDocuments();
+  //   result.documents.forEach((res) {
+  //     print(res.data);
+  //   });
+  // }
 }
