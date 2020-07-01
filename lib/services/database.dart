@@ -62,6 +62,7 @@ class DatabaseService {
         .toList();
   }
 
+  // get meals stream
   Stream<List<MenuItem>> get meals {
     return menuCollection
         .where("category", isEqualTo: "meal")
@@ -69,12 +70,27 @@ class DatabaseService {
         .map(_menuItemListFromSnapshot);
   }
 
-  // void getMeals() async {
-  //   var result = await menuCollection
-  //       .where("category", isEqualTo: "meal")
-  //       .getDocuments();
-  //   result.documents.forEach((res) {
-  //     print(res.data);
-  //   });
-  // }
+  // get meals stream
+  Stream<List<MenuItem>> get singles {
+    return menuCollection
+        .where("category", isEqualTo: "single")
+        .snapshots()
+        .map(_menuItemListFromSnapshot);
+  }
+
+  // get meals stream
+  Stream<List<MenuItem>> get sides {
+    return menuCollection
+        .where("category", isEqualTo: "side")
+        .snapshots()
+        .map(_menuItemListFromSnapshot);
+  }
+
+  // get meals stream
+  Stream<List<MenuItem>> get drinks {
+    return menuCollection
+        .where("category", isEqualTo: "drink")
+        .snapshots()
+        .map(_menuItemListFromSnapshot);
+  }
 }
