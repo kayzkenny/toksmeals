@@ -1,91 +1,63 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:toksmeals/models/user.dart';
+import 'package:toksmeals/services/database.dart';
 
-class User {
-  User({
-    @required this.uid,
-    this.photoUrl,
-    this.displayName,
-  });
-  final String uid;
-  final String photoUrl;
-  final String displayName;
-}
+class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-abstract class AuthBase {
-  Stream<User> get onAuthStateChanged;
-  Future<User> currentUser();
-  Future<User> signInAnonymously();
-  Future<User> signInWithGoogle();
-  Future<void> signOut();
-}
+  // create user object based on firebase user
+  User _userFromFirebaseUser(FirebaseUser user) {
+    return user != null ? User(uid: user.uid) : null;
+  }
 
-class Auth implements AuthBase {
-  final _firebaseAuth = FirebaseAuth.instance;
+  // get auth change from user stream
+  Stream<User> get user {
+    return _auth.onAuthStateChanged
+        //.map((FirebaseUser user) => _userFromFirebaseUser(user));
+        .map(_userFromFirebaseUser);
+  }
 
-  User _userFromFirebase(FirebaseUser user) {
-    if (user == null) {
+  // sign in with email & password
+  Future signInWithEmailAndPassword({String email, String password}) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseUser user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
       return null;
     }
-    return User(
-      uid: user.uid,
-      displayName: user.displayName,
-      photoUrl: user.photoUrl,
-    );
   }
 
-  @override
-  Stream<User> get onAuthStateChanged {
-    return _firebaseAuth.onAuthStateChanged.map(_userFromFirebase);
-  }
-
-  @override
-  Future<User> currentUser() async {
-    final user = await _firebaseAuth.currentUser();
-    return _userFromFirebase(user);
-  }
-
-  @override
-  Future<User> signInAnonymously() async {
-    final authResult = await _firebaseAuth.signInAnonymously();
-    return _userFromFirebase(authResult.user);
-  }
-
-  @override
-  Future<User> signInWithGoogle() async {
-    final googleSignIn = GoogleSignIn();
-    final googleAccount = await googleSignIn.signIn();
-    if (googleAccount != null) {
-      final googleAuth = await googleAccount.authentication;
-      if (googleAuth.accessToken != null && googleAuth.idToken != null) {
-        final authResult = await _firebaseAuth.signInWithCredential(
-          GoogleAuthProvider.getCredential(
-            idToken: googleAuth.idToken,
-            accessToken: googleAuth.accessToken,
-          ),
-        );
-        return _userFromFirebase(authResult.user);
-      } else {
-        throw PlatformException(
-          code: 'ERROR_MISSING_GOOGLE_AUTH_TOKEN',
-          message: 'Missing Google Auth Token',
-        );
-      }
-    } else {
-      throw PlatformException(
-        code: 'ERROR_ABORTED_BY_USER',
-        message: 'Sign in aborted by user',
+  // register with email & password
+  Future registerWithEmailAndPassword({String email, String password}) async {
+    try {
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseUser user = result.user;
+      // create a new doc for the user with uid
+      await DatabaseService(uid: user.uid).updateUserData(
+        address: 'Somewhere in Nigeria',
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        phoneNumber: 'Phone Number',
+        zipCode: 'Zip Code',
       );
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
     }
   }
 
-  @override
-  Future<void> signOut() async {
-    final googleSignIn = GoogleSignIn();
-    await googleSignIn.signOut();
-    await _firebaseAuth.signOut();
+  // sign out
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
-
 }
