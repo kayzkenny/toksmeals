@@ -1,12 +1,30 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:toksmeals/models/menu_item.dart';
-import 'package:toksmeals/screens/home/menu.dart';
+import 'package:toksmeals/screens/checkout/checkout_page.dart';
+import 'package:toksmeals/screens/account/account_page.dart';
+import 'package:toksmeals/screens/cart/cart_page.dart';
+import 'package:toksmeals/screens/home/menu_page.dart';
 import 'package:toksmeals/services/auth.dart';
-import 'package:toksmeals/services/database.dart';
+import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+  int _selectedIndex = 0;
+  List<Widget> _widgetOptions = <Widget>[
+    MenuPage(),
+    CartPage(),
+    CheckoutPage(),
+    AccountPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,42 +50,49 @@ class Home extends StatelessWidget {
               },
             ),
           ],
-          bottom: TabBar(
-            tabs: <Widget>[
-              Tab(
-                icon: Icon(Icons.local_dining),
-              ),
-              Tab(
-                icon: Icon(Icons.restaurant),
-              ),
-              Tab(
-                icon: Icon(Icons.fastfood),
-              ),
-              Tab(
-                icon: Icon(Icons.local_drink),
-              ),
-            ],
-          ),
+          bottom: _selectedIndex == 0
+              ? TabBar(
+                  tabs: <Widget>[
+                    Tab(
+                      icon: Icon(Icons.local_dining),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.restaurant),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.fastfood),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.local_drink),
+                    ),
+                  ],
+                )
+              : null,
         ),
-        body: TabBarView(
-          children: [
-            StreamProvider<List<MenuItem>>.value(
-              value: DatabaseService().meals,
-              child: Menu(),
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home'),
             ),
-            StreamProvider<List<MenuItem>>.value(
-              value: DatabaseService().singles,
-              child: Menu(),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_basket),
+              title: Text('Cart'),
             ),
-            StreamProvider<List<MenuItem>>.value(
-              value: DatabaseService().sides,
-              child: Menu(),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.payment),
+              title: Text('Checkout'),
             ),
-            StreamProvider<List<MenuItem>>.value(
-              value: DatabaseService().drinks,
-              child: Menu(),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              title: Text('Account'),
             ),
           ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.teal[300],
+          onTap: _onItemTapped,
+          unselectedItemColor: Colors.grey[500],
         ),
       ),
     );
