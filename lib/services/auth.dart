@@ -36,17 +36,6 @@ class AuthService {
           email: email, password: password);
       FirebaseUser user = result.user;
 
-      // NOT WORKING USES A DIFFERENT ID WHEN WRITING TO FIRESTORE
-      // create a new doc for the user with uid
-      // await DatabaseService(uid: user.uid).updateUserData(
-      //   address: 'Somewhere in Nigeria',
-      //   firstName: 'First Name',
-      //   lastName: 'Last Name',
-      //   phoneNumber: 'Phone Number',
-      //   zipCode: 'Zip Code',
-      // );
-
-      // TODO: USE CLOUD FUNCTION INSTEAD
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

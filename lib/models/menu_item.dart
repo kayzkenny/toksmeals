@@ -3,6 +3,8 @@ class MenuItem {
   final String imageUrl;
   final String name;
   final int price;
+  int quantity;
 
-  MenuItem({this.category, this.imageUrl, this.name, this.price});
+  MenuItem(
+      {this.category, this.imageUrl, this.name, this.price, this.quantity = 0});
 }
