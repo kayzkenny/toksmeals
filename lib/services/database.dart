@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toksmeals/models/menu_item.dart';
 import 'package:toksmeals/models/user.dart';
 
 class DatabaseService {
   final String uid;
 
+  static final _firestore = Firestore.instance;
+
   DatabaseService({this.uid});
 
-  // collection reference
-  final CollectionReference userCollection =
-      Firestore.instance.collection('users');
-
-  final CollectionReference menuCollection =
-      Firestore.instance.collection('menu');
+  // collection references
+  final CollectionReference userCollection = _firestore.collection('users');
+  final CollectionReference menuCollection = _firestore.collection('menu');
 
   // update user data
   Future updateUserData({
@@ -23,7 +23,8 @@ class DatabaseService {
     String zipCode,
     String uid,
   }) async {
-    return await userCollection.document(uid).setData({
+    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    return await userCollection.document(firebaseUser.uid).updateData({
       'address': address,
       'firstName': firstName,
       'lastName': lastName,
@@ -36,6 +37,7 @@ class DatabaseService {
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
       address: snapshot.data['address'],
+      email: snapshot.data['email'],
       firstName: snapshot.data['firstName'],
       lastName: snapshot.data['lastName'],
       phoneNumber: snapshot.data['phoneNumber'],

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toksmeals/models/user.dart';
-import 'package:toksmeals/services/database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -36,14 +35,18 @@ class AuthService {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+
+      // NOT WORKING USES A DIFFERENT ID WHEN WRITING TO FIRESTORE
       // create a new doc for the user with uid
-      await DatabaseService(uid: user.uid).updateUserData(
-        address: 'Somewhere in Nigeria',
-        firstName: 'First Name',
-        lastName: 'Last Name',
-        phoneNumber: 'Phone Number',
-        zipCode: 'Zip Code',
-      );
+      // await DatabaseService(uid: user.uid).updateUserData(
+      //   address: 'Somewhere in Nigeria',
+      //   firstName: 'First Name',
+      //   lastName: 'Last Name',
+      //   phoneNumber: 'Phone Number',
+      //   zipCode: 'Zip Code',
+      // );
+
+      // TODO: USE CLOUD FUNCTION INSTEAD
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

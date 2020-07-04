@@ -6,6 +6,7 @@ class User {
 
 class UserData {
   final String address;
+  final String email;
   final String firstName;
   final String lastName;
   final String phoneNumber;
@@ -14,6 +15,7 @@ class UserData {
 
   UserData({
     this.address,
+    this.email,
     this.firstName,
     this.lastName,
     this.phoneNumber,
