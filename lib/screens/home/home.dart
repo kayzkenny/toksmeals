@@ -1,3 +1,5 @@
+import 'package:provider/provider.dart';
+import 'package:toksmeals/models/cart.dart';
 import 'package:toksmeals/screens/checkout/checkout_page.dart';
 import 'package:toksmeals/screens/account/account_page.dart';
 import 'package:toksmeals/screens/cart/cart_page.dart';
@@ -77,7 +79,36 @@ class _HomeState extends State<Home> {
               title: Text('Home'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_basket),
+              icon: Stack(
+                children: <Widget>[
+                  Icon(Icons.shopping_basket),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: new BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 14,
+                        minHeight: 14,
+                      ),
+                      child: Consumer<Cart>(builder: (context, cart, child) {
+                        return Text(
+                          '${cart.cart.length}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        );
+                      }),
+                    ),
+                  )
+                ],
+              ),
               title: Text('Cart'),
             ),
             BottomNavigationBarItem(

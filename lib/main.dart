@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toksmeals/models/cart.dart';
 import 'package:toksmeals/models/user.dart';
 import 'package:toksmeals/screens/account/account_form.dart';
 import 'package:toksmeals/screens/wrapper.dart';
@@ -9,10 +10,25 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  // @override
+  // Widget build(BuildContext context) {
+  //   return StreamProvider<User>.value(
+  //     value: AuthService().user,
+  //     child: MaterialApp(
+  //       home: Wrapper(),
+  //       routes: {
+  //         '/accountForm': (context) => AccountForm(),
+  //       },
+  //     ),
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value(
-      value: AuthService().user,
+    return MultiProvider(
+      providers: [
+        StreamProvider<User>.value(value: AuthService().user),
+        ChangeNotifierProvider(create: (context) => Cart())
+      ],
       child: MaterialApp(
         home: Wrapper(),
         routes: {

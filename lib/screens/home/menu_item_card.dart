@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:toksmeals/models/cart.dart';
 import 'package:toksmeals/models/menu_item.dart';
 
 class MenuItemCard extends StatelessWidget {
@@ -7,6 +9,7 @@ class MenuItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context, listen: false);
     return Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
@@ -38,7 +41,9 @@ class MenuItemCard extends StatelessWidget {
                   children: <Widget>[
                     FlatButton(
                       child: const Text('ADD'),
-                      onPressed: () {/* ... */},
+                      onPressed: () {
+                        cart.addToCart(menuItem);
+                      },
                     ),
                   ],
                 ),
