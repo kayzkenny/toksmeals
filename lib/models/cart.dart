@@ -6,13 +6,13 @@ class Cart extends ChangeNotifier {
   List<MenuItem> cart = [];
 
   void addToCart(MenuItem menuItem) {
-    if (cart.contains(menuItem)) {
-      var index = cart.indexOf(menuItem);
+    if (cart.any((item) => item.name == menuItem.name)) {
+      int index = getMenuItemIndex(menuItem);
       increaseQuantity(index);
     } else {
       cart.add(menuItem);
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   void removeFromCart(MenuItem menuItem) {
@@ -30,6 +30,12 @@ class Cart extends ChangeNotifier {
         ? removeFromCart(cart[index])
         : cart[index].quantity--;
     notifyListeners();
+  }
+
+  int getMenuItemIndex(MenuItem menuItem) {
+    var item = cart.firstWhere((item) => item.name == menuItem.name);
+    var index = cart.indexOf(item);
+    return index;
   }
 
   int get total {

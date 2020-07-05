@@ -4,6 +4,7 @@ class CheckoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
+      //TODO: checkout page
       child: Text('Checkout Page'),
     );
   }

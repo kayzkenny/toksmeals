@@ -6,5 +6,5 @@ class MenuItem {
   int quantity;
 
   MenuItem(
-      {this.category, this.imageUrl, this.name, this.price, this.quantity = 0});
+      {this.category, this.imageUrl, this.name, this.price, this.quantity = 1});
 }
