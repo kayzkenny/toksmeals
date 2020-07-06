@@ -43,7 +43,6 @@ class CheckoutPage extends StatelessWidget {
                     RaisedButton(
                       child: Text('Place Order'),
                       textColor: Colors.white,
-                      // TODO: Add Orders Page
                       onPressed: () async {
                         final cart = Provider.of<Cart>(context, listen: false);
                         await DatabaseService(uid: user.uid)

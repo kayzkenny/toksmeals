@@ -36,8 +36,9 @@ class AccountPage extends StatelessWidget {
                     RaisedButton(
                       child: Text('My Orders'),
                       textColor: Colors.white,
-                      // TODO: Add Orders Page
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/orders');
+                      },
                       padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                       color: Colors.teal[300],
                     ),

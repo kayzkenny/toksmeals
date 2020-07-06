@@ -22,6 +22,16 @@ class ReceiptPage extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
               color: Colors.teal[300],
             ),
+            SizedBox(height: 16.0),
+            RaisedButton(
+              child: Text('My Orders'),
+              textColor: Colors.white,
+              onPressed: () {
+                Navigator.pushNamed(context, '/orders');
+              },
+              padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              color: Colors.teal[300],
+            ),
           ],
         ),
       ),

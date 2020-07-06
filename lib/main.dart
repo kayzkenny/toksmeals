@@ -5,6 +5,7 @@ import 'package:toksmeals/models/user.dart';
 import 'package:toksmeals/screens/account/account_form.dart';
 import 'package:toksmeals/screens/checkout/receipt_page.dart';
 import 'package:toksmeals/screens/home/home.dart';
+import 'package:toksmeals/screens/orders/orders_page.dart';
 import 'package:toksmeals/screens/wrapper.dart';
 import 'package:toksmeals/services/auth.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
           '/accountForm': (context) => AccountForm(),
           '/home': (context) => Home(),
           '/receipt': (context) => ReceiptPage(),
+          '/orders': (context) => OrdersPage(),
         },
       ),
     );
