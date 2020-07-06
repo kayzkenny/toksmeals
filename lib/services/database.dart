@@ -14,6 +14,19 @@ class DatabaseService {
   final CollectionReference userCollection = _firestore.collection('users');
   final CollectionReference menuCollection = _firestore.collection('menu');
 
+  // place order
+  Future placeOrder({List<MenuItem> cart, int total}) async {
+    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    return await userCollection
+        .document(firebaseUser.uid)
+        .collection('orders')
+        .add({
+      'items': cart.map((item) => item.toMap()).toList(),
+      'total': total,
+      'orderDate': Timestamp.fromDate(DateTime.now()),
+    });
+  }
+
   // update user data
   Future updateUserData({
     String address,

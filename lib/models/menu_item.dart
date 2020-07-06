@@ -7,4 +7,14 @@ class MenuItem {
 
   MenuItem(
       {this.category, this.imageUrl, this.name, this.price, this.quantity = 1});
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'category': category,
+      'imageUrl': imageUrl,
+      'name': name,
+      'price': price,
+      'quantity': quantity,
+    };
+  }
 }
